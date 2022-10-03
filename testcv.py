@@ -1,4 +1,13 @@
 import cv2 as cv
+import time
+import serial
+import serial.tools.list_ports
+
+def getport():
+  ports=list(serial.tools.list_ports.comports())
+  return ports[0].device
+
+ardu=serial.Serial(port=getport(),baudrate=9600,timeout=1)
 
 if __name__ == "__main__":
   vid=cv.VideoCapture(0) #trial and error to find the right cam
@@ -27,10 +36,24 @@ if __name__ == "__main__":
       #cv.rectangle(frame,(x,y),(x+w,y+h),(0,0,255), thickness=5)
     #cv.circle(frame,(int(framex/2),int(framey/2)),radius=10,color=(255,0,0),thickness=-1)
       cv.rectangle(frame,(x,y),(x+w,y+h),color=(0,0,255),thickness=3)
-      print(x," ",y)
+      #print(x," ",y)
     cv.imshow('img',frame)
     
-
+    if (mx>(2/3*framex)):
+      ardu.write(bytes(['r']))
+      print('r')
+    elif (mx<(1/3*framex)):
+      ardu.write(bytes(['l']))
+      print('l')
+    elif (mx>(1/3*framex) and mx<(2/3*framex)):
+      ardu.write(bytes(['f']))
+      print('f')
+    elif (bool(eyes)==0):
+      ardu.write(bytes(['s']))
+    else:
+      ardu.write(bytes(['n']))
+      print('n')
+    
     #print(mx,' ',my)
 
     
