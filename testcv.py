@@ -4,8 +4,8 @@ import serial
 import serial.tools.list_ports
 #pip install pyserial
 
-resx=480
-resy=270
+resx=568
+resy=320
 
 def getport():
   ports=list(serial.tools.list_ports.comports())
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     if cv.waitKey(1) & 0xFF == ord('q'):
       break
     frame=cv.resize(frame,(resx,resy))
-    signs=cascade.detectMultiScale(frame,scaleFactor=1.1,minNeighbors=5)
+    signs=cascade.detectMultiScale(frame,scaleFactor=1.2,minNeighbors=5)
     #time.sleep(0.01)
     frame=cv.cvtColor(frame,cv.COLOR_GRAY2BGR)
     for(x,y,w,h) in signs:
