@@ -15,8 +15,11 @@ if __name__ == "__main__":
   mx=0
   my=0
 
-  framex=vid.get(cv.CAP_PROP_FRAME_WIDTH)
-  framey=vid.get(cv.CAP_PROP_FRAME_HEIGHT)
+  #framex=vid.get(cv.CAP_PROP_FRAME_WIDTH)
+  #framey=vid.get(cv.CAP_PROP_FRAME_HEIGHT)
+
+  framex=720
+  framey=405
   cv.namedWindow('img')
   while(True):
     ret,frame=vid.read()
@@ -25,8 +28,8 @@ if __name__ == "__main__":
     #cv.imshow('img',frame)
     if cv.waitKey(1) & 0xFF == ord('q'):
       break
-    
-    signs=cascade.detectMultiScale(frame,scaleFactor=1.1,minNeighbors=7)
+    frame=cv.resize(frame,(720,405))
+    signs=cascade.detectMultiScale(frame,scaleFactor=1.1,minNeighbors=9)
     time.sleep(0.01)
     for(x,y,w,h) in signs:
       mx=x+w/2
