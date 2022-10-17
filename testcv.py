@@ -2,7 +2,7 @@ import cv2 as cv
 import time
 import serial
 import serial.tools.list_ports
-
+#pip install pyserial
 def getport():
   ports=list(serial.tools.list_ports.comports())
   return ports[0].device
