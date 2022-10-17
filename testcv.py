@@ -3,6 +3,10 @@ import time
 import serial
 import serial.tools.list_ports
 #pip install pyserial
+
+resx=480
+resy=270
+
 def getport():
   ports=list(serial.tools.list_ports.comports())
   return ports[0].device
@@ -10,27 +14,29 @@ def getport():
 #ardu=serial.Serial(port=getport(),baudrate=9600,timeout=1)
 
 if __name__ == "__main__":
-  vid=cv.VideoCapture(0) #trial and error to find the right cam
+  vid=cv.VideoCapture(1, cv.CAP_DSHOW) #trial and error to find the right cam
   cascade=cv.CascadeClassifier('cascade-2.xml')
   mx=0
   my=0
-
+  vid.set(cv.CAP_PROP_FRAME_WIDTH,1280)
+  vid.set(cv.CAP_PROP_FRAME_HEIGHT,720)
   #framex=vid.get(cv.CAP_PROP_FRAME_WIDTH)
   #framey=vid.get(cv.CAP_PROP_FRAME_HEIGHT)
 
-  framex=720
-  framey=405
+  framex=resx
+  framey=resy
   cv.namedWindow('img')
   while(True):
     ret,frame=vid.read()
-    #frame=cv.cvtColor(frame,cv.COLOR_BGR2GRAY)
+    frame=cv.cvtColor(frame,cv.COLOR_BGR2GRAY)
         
     #cv.imshow('img',frame)
     if cv.waitKey(1) & 0xFF == ord('q'):
       break
-    frame=cv.resize(frame,(720,405))
-    signs=cascade.detectMultiScale(frame,scaleFactor=1.1,minNeighbors=9)
-    time.sleep(0.01)
+    frame=cv.resize(frame,(resx,resy))
+    signs=cascade.detectMultiScale(frame,scaleFactor=1.1,minNeighbors=5)
+    #time.sleep(0.01)
+    frame=cv.cvtColor(frame,cv.COLOR_GRAY2BGR)
     for(x,y,w,h) in signs:
       mx=x+w/2
       my=y+h/2
