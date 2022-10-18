@@ -194,7 +194,7 @@ if __name__ == "__main__":
       print("this is fine")
 
 
-    #print(dmat)
+    print(dmat)
     print("regions above threshold: ",nearcount)
     print(" ")
     #detect closeness
