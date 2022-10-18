@@ -155,7 +155,7 @@ if __name__ == "__main__":
     #using LEFT eye
     DMSframe=cv.resize(fl,(dx,dy))
     #cascade detector
-    signs=cascade.detectMultiScale(DMSframe,scaleFactor=1.1,minNeighbors=5)
+    signs=cascade.detectMultiScale(DMSframe,scaleFactor=1.1,minNeighbors=7)
     #allow color again for boxing    
     DMSframe=cv.cvtColor(DMSframe,cv.COLOR_GRAY2BGR)
     for(x,y,w,h) in signs:
