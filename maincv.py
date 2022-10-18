@@ -58,8 +58,8 @@ if __name__ == "__main__":
     retr,fr=right.read()
 
     #make grayscale for better performance
-    fl=cv.cvtcolor(fl,cv.COLOR_BGR2GRAY)
-    fr=cv.cvtcolor(fr,cv.COLOR_BGR2GRAY)
+    fl=cv.cvtColor(fl,cv.COLOR_BGR2GRAY)
+    fr=cv.cvtColor(fr,cv.COLOR_BGR2GRAY)
 
     #sign detection section
     #using LEFT eye
