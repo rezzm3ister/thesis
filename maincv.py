@@ -179,26 +179,15 @@ if __name__ == "__main__":
     dmx=vx//8
     dmy=vy//8
 
+    #refer to function above
     dmat=getdispsum(depth)
 
-    #td=np.zeros((144,256))
+    nearcount=(dmat>200000).sum()
 
-    #td=depth[0:18,128:160]
-    #cv.imshow("td",td)
-
-       
-
-    
-    #for j in range(8):
-    #  for i in range(8):
-    #    td=depth[(dmx*j):(dmx*(j+1)-1),(dmx*i):(dmx*(i+1))-1]
-    #    cv.imshow("td",td)
-    #    dmat[j,i]=np.sum(td)
-    #    #print(j,"j,",dmx,", ",dmx*j, ", ",dmat[j,i])
-    #  #print(i,"i,",dmy,", ",dmy*i)
 
 
     print(dmat)
+    print("regions above threshold: ",nearcount)
     print(" ")
     #detect closeness
 
