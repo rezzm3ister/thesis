@@ -14,9 +14,9 @@ import serial.tools.list_ports
 sx=1280
 sy=720
 
-#sign detection size
-dx=640
-dy=360
+#sign detection size, defaults 640x360
+dx=1024
+dy=576
 
 #depth detect size
 vx=256
@@ -27,6 +27,7 @@ def getport():
   ports=list(serial.tools.list_ports.comports())
   return ports[0].device
 
+#unused func for now
 def getdispsum(depth):
   dmx=vx//8
   dmy=vy//8
@@ -130,10 +131,11 @@ if __name__ == "__main__":
   ft=0
   pft=0
 
+  #setting cascade
   cascade=cv.CascadeClassifier('cascade-2.xml')
   mx=0
   my=0
-
+  #this probably isnt used
   tempgpu=cv.cuda_GpuMat()
   
   cv.namedWindow('img')
@@ -165,9 +167,7 @@ if __name__ == "__main__":
     cv.imshow('img',DMSframe)
 
 
-
-    
-    #DEPTH MAP
+    #DEPTH MAP, this uses gpu
     dfl=cv.resize(fl,(vx,vy))
     dfr=cv.resize(fr,(vx,vy))
     stereo=cv.cuda.StereoSGM.create(minDisparity=10,numDisparities=32,blockSize=16,speckleRange=4)
@@ -175,37 +175,25 @@ if __name__ == "__main__":
     depth=depth
     cv.imshow("depth",depth/1280)
 
-    #depth regions
-    dmat=np.zeros((8,8))
-    dmx=vx//8
-    dmy=vy//8
+    #depth regions NOT NEEDED ANYMORE
+    #dmat=np.zeros((8,8))
+    #dmx=vx//8
+    #dmy=vy//8
 
     #refer to function above
     #dmat=getdispsum(depth)
-
     #nearcount=(dmat>175000).sum()
+
+    #count number of pixels above a certain disparity threshold
+    #number before stopping TBD
     nearcount=(depth>350).sum()
 
-    #if(nearcount>=10 and nearcount<20):
-    #  print("something ahead")
-    #elif(nearcount>=20 and nearcount<30):
-    #  print("stop pls")
-    #elif(nearcount>30):
-    #  print("BLOODY FUCKING STOP")
-    #else:
-    #  print("this is fine")
-
-    #if 3/64 of the fov has something close enough, stop chair
-    
-
+  
+    #debugging prints
     #print(dmat)
     print("points above threshold: ",nearcount)
     print(" ")
-    #detect closeness
-
-
-
-
+    
     #FPS COUNTER
     ft=time.time()
     fps=1/(ft-pft)
@@ -214,35 +202,34 @@ if __name__ == "__main__":
     pft=ft
 
 
-
     
     #SEND DATA TO ARDUINO
     #uncomment after
-    '''
-    if nearcount>3:
-      print("stopping")
-      #ardu.write(bytes(['s'])
-
-    if(signs==()):
-      print('s')
-      #ardu.write(bytes(['s']))
-    else:
-      print(mx," ",my)
-      if (mx>(2/3*dx)):
-      #ardu.write(bytes(['r']))
-        print('r')
-      elif (mx<(1/3*dx)):
-        #ardu.write(bytes(['l']))
-        print('l')
-      elif (mx>(1/3*dx) and mx<(2/3*dx)):
-        #ardu.write(bytes(['f']))
-        print('f')
-      else:
-        #ardu.write(bytes(['n']))
-        print('n')
+    
+#    if nearcount>3:
+#      print("stopping")
+#      #ardu.write(bytes(['s'])
+#
+#    if(signs==()):
+#      print('s')
+#      #ardu.write(bytes(['s']))
+#    else:
+#      print(mx," ",my)
+#      if (mx>(2/3*dx)):
+#      #ardu.write(bytes(['r']))
+#        print('r')
+#      elif (mx<(1/3*dx)):
+#        #ardu.write(bytes(['l']))
+#        print('l')
+#      elif (mx>(1/3*dx) and mx<(2/3*dx)):
+#        #ardu.write(bytes(['f']))
+#        print('f')
+#      else:
+#        #ardu.write(bytes(['n']))
+#        print('n')
     #else:
     #print("has stuff")
     #print(mx,' ',my)
-    '''
+    
     
   cv.destroyAllWindows()
