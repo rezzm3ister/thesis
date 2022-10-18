@@ -3,75 +3,106 @@ import time
 import serial
 import serial.tools.list_ports
 
-resx=426
-resy=240
 
+#main cam res size
+sx=1280
+sy=720
+
+#sign detection size
+dx=426
+dy=240
+
+#depth detect size
+vx=256
+vy=144
+
+#get arduino port
 def getport():
   ports=list(serial.tools.list_ports.comports())
   return ports[0].device
 
+#ARDUINO CONNECT, UNCOMMENT LINE BELOW FOR ARDUINO
 #ardu=serial.Serial(port=getport(),baudrate=9600,timeout=1)
 
 if __name__ == "__main__":
-  vid=cv.VideoCapture(0) #trial and error to find the right cam
+  #initialize both cameras
+  left=cv.VideoCapture(0)
+  right=cv.VideoCapture(1)
+  left.set(cv.CAP_PROP_FRAME_WIDTH, sx)
+  left.set(cv.CAP_PROP_FRAME_HEIGHT, sy)
+  right.set(cv.CAP_PROP_FRAME_WIDTH, sx)
+  right.set(cv.CAP_PROP_FRAME_HEIGHT, sy)
+  #set up cuda Mats
+  gl=cv.cuda_GpuMat()
+  gr=cv.cuda_GpuMat()
+  gd=cv.cuda_GpuMat()
+  font = cv.FONT_HERSHEY_SIMPLEX
+
+  #frametime fps counter params
+  ft=0
+  pft=0
+
   cascade=cv.CascadeClassifier('cascade-2.xml')
   mx=0
   my=0
-  vid.set(cv.CAP_PROP_FRAME_WIDTH,1280)
-  vid.set(cv.CAP_PROP_FRAME_HEIGHT,720)
-  #framex=vid.get(cv.CAP_PROP_FRAME_WIDTH)
-  #framey=vid.get(cv.CAP_PROP_FRAME_HEIGHT)
+
   tempgpu=cv.cuda_GpuMat()
-  framex=resx
-  framey=resy
+  
   cv.namedWindow('img')
   while(True):
-    ret,frame=vid.read()
-    frame=cv.cvtColor(frame,cv.COLOR_BGR2GRAY)
-    #cv.imshow('img',frame)
+    #get both cam views
     if cv.waitKey(1) & 0xFF == ord('q'):
       break
-    frame=cv.resize(frame,(resx,resy))
-    signs=cascade.detectMultiScale(frame,scaleFactor=1.1,minNeighbors=5)
-    #time.sleep(0.01)
-    frame=cv.cvtColor(frame,cv.COLOR_GRAY2BGR)
+
+    retl,fl=left.read()
+    retr,fr=right.read()
+
+    #make grayscale for better performance
+    fl=cv.cvtcolor(fl,cv.COLOR_BGR2GRAY)
+    fr=cv.cvtcolor(fr,cv.COLOR_BGR2GRAY)
+
+    #sign detection section
+    #using LEFT eye
+    DMSframe=cv.resize(fl,(dx,dy))
+    #cascade detector
+    signs=cascade.detectMultiScale(DMSframe,scaleFactor=1.1,minNeighbors=5)
+    #allow color again for boxing    
+    DMSframe=cv.cvtColor(DMSframe,cv.COLOR_GRAY2BGR)
     for(x,y,w,h) in signs:
       mx=x+w/2
       my=y+h/2
-      #cv.circle(frame,(250,250),radius=100,color=(0,0,126),thickness=-1)
-      
-      #cv.rectangle(frame,(x,y),(x+w,y+h),(0,0,255), thickness=5)
-    #cv.circle(frame,(int(framex/2),int(framey/2)),radius=10,color=(255,0,0),thickness=-1)
-      cv.rectangle(frame,(x,y),(x+w,y+h),color=(0,0,255),thickness=3)
+      #box the sign
+      cv.rectangle(DMSframe,(x,y),(x+w,y+h),color=(0,0,255),thickness=3)
       #print(x," ",y)
-    cv.imshow('img',frame)
-    '''
-    if (mx>(2/3*framex)):
-      ardu.write(bytes(['r']))
-      print('r')
-    elif (mx<(1/3*framex)):
-      ardu.write(bytes(['l']))
-      print('l')
-    elif (mx>(1/3*framex) and mx<(2/3*framex)):
-      ardu.write(bytes(['f']))
-      print('f')
-    elif (bool(eyes)==0):
-      ardu.write(bytes(['s']))
-    else:
-      ardu.write(bytes(['n']))
-      print('n')
-    '''
+    cv.imshow('img',DMSframe)
+
+
+    #DEPTH MAP
+    dfl=cv.resize(fl,(vx,vy))
+    dfr=cv.resize(fr,(vx,vy))
+    stereo=cv.cuda.StereoSGM.create(minDisparity=10,numDisparities=32,blockSize=16,speckleRange=4)
+    depth=stereo.compute(fl,fr)
+    cv.imshow("depth",depth/1280)
+
+
+    fps=1/(ft-pft)
+    #cv.putText(depth, str(fps), (7, 70), font, 1, 255, 3, cv.LINE_AA)
+    print(fps)
+    pft=ft
+
+
+    #SEND DATA TO ARDUINO
     if(signs==()):
       print('s')
     else:
       print(mx," ",my)
-      if (mx>(2/3*framex)):
+      if (mx>(2/3*dx)):
       #ardu.write(bytes(['r']))
         print('r')
-      elif (mx<(1/3*framex)):
+      elif (mx<(1/3*dx)):
         #ardu.write(bytes(['l']))
         print('l')
-      elif (mx>(1/3*framex) and mx<(2/3*framex)):
+      elif (mx>(1/3*dx) and mx<(2/3*dx)):
         #ardu.write(bytes(['f']))
         print('f')
       else:
