@@ -31,7 +31,7 @@ def getdispsum(depth):
   dmx=vx//8
   dmy=vy//8
   dmat=np.zeros((8,8))
-
+  #assigning this in for loop didnt work
   dmat[0,0]=np.sum(depth[0:17,0:31])
   dmat[0,1]=np.sum(depth[0:17,32:63])
   dmat[0,2]=np.sum(depth[0:17,64:95])
@@ -77,6 +77,7 @@ def getdispsum(depth):
   dmat[4,6]=np.sum(depth[72:89,192:221])
   dmat[4,7]=np.sum(depth[72:89,224:255])
 
+  #this row weirdly was doubling
   dmat[5,0]=np.sum(depth[90:125,0:31])//2
   dmat[5,1]=np.sum(depth[90:125,32:63])//2
   dmat[5,2]=np.sum(depth[90:125,64:95])//2
@@ -193,10 +194,8 @@ if __name__ == "__main__":
     #else:
     #  print("this is fine")
 
-    if nearcount>3:
-      print("stopping")
-      #ardu.write(bytes(['s'])
-
+    #if 3/64 of the fov has something close enough, stop chair
+    
 
     #print(dmat)
     print("regions above threshold: ",nearcount)
@@ -219,6 +218,10 @@ if __name__ == "__main__":
     #SEND DATA TO ARDUINO
     #uncomment after
     '''
+    if nearcount>3:
+      print("stopping")
+      #ardu.write(bytes(['s'])
+
     if(signs==()):
       print('s')
       #ardu.write(bytes(['s']))
