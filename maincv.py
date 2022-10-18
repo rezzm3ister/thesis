@@ -81,7 +81,7 @@ if __name__ == "__main__":
     dfl=cv.resize(fl,(vx,vy))
     dfr=cv.resize(fr,(vx,vy))
     stereo=cv.cuda.StereoSGM.create(minDisparity=10,numDisparities=32,blockSize=16,speckleRange=4)
-    depth=stereo.compute(fl,fr)
+    depth=stereo.compute(dfl,dfr)
     cv.imshow("depth",depth/1280)
 
     ft=time.time()
