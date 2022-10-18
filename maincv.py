@@ -181,9 +181,10 @@ if __name__ == "__main__":
     dmy=vy//8
 
     #refer to function above
-    dmat=getdispsum(depth)
+    #dmat=getdispsum(depth)
 
-    nearcount=(dmat>175000).sum()
+    #nearcount=(dmat>175000).sum()
+    nearcount=(depth>400).sum()
 
     #if(nearcount>=10 and nearcount<20):
     #  print("something ahead")
@@ -198,7 +199,7 @@ if __name__ == "__main__":
     
 
     #print(dmat)
-    print("regions above threshold: ",nearcount)
+    print("points above threshold: ",nearcount)
     print(" ")
     #detect closeness
 
