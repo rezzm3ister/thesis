@@ -184,7 +184,7 @@ if __name__ == "__main__":
     #dmat=getdispsum(depth)
 
     #nearcount=(dmat>175000).sum()
-    nearcount=(depth>500).sum()
+    nearcount=(depth>450).sum()
 
     #if(nearcount>=10 and nearcount<20):
     #  print("something ahead")
