@@ -198,7 +198,7 @@ if __name__ == "__main__":
       #ardu.write(bytes(['s'])
 
 
-    print(dmat)
+    #print(dmat)
     print("regions above threshold: ",nearcount)
     print(" ")
     #detect closeness
