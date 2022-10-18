@@ -182,7 +182,7 @@ if __name__ == "__main__":
     #refer to function above
     dmat=getdispsum(depth)
 
-    nearcount=(dmat>200000).sum()
+    nearcount=(dmat>175000).sum()
 
     #if(nearcount>=10 and nearcount<20):
     #  print("something ahead")
@@ -193,7 +193,7 @@ if __name__ == "__main__":
     #else:
     #  print("this is fine")
 
-    if nearcount>2:
+    if nearcount>3:
       print("stopping")
       #ardu.write(bytes(['s'])
 
