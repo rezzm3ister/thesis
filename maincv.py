@@ -84,7 +84,7 @@ if __name__ == "__main__":
     depth=stereo.compute(fl,fr)
     cv.imshow("depth",depth/1280)
 
-
+    ft=time.time()
     fps=1/(ft-pft)
     #cv.putText(depth, str(fps), (7, 70), font, 1, 255, 3, cv.LINE_AA)
     print(fps)
