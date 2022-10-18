@@ -15,8 +15,8 @@ sx=1280
 sy=720
 
 #sign detection size, defaults 640x360
-dx=854
-dy=480
+dx=640
+dy=360
 
 #depth detect size
 vx=256
