@@ -77,14 +77,14 @@ def getdispsum(depth):
   dmat[4,6]=np.sum(depth[72:89,192:221])
   dmat[4,7]=np.sum(depth[72:89,224:255])
 
-  dmat[5,0]=np.sum(depth[90:125,0:31])
-  dmat[5,1]=np.sum(depth[90:125,32:63])
-  dmat[5,2]=np.sum(depth[90:125,64:95])
-  dmat[5,3]=np.sum(depth[90:125,96:127])
-  dmat[5,4]=np.sum(depth[90:125,128:159])
-  dmat[5,5]=np.sum(depth[90:125,160:191])
-  dmat[5,6]=np.sum(depth[90:125,192:221])
-  dmat[5,7]=np.sum(depth[90:125,224:255])
+  dmat[5,0]=np.sum(depth[90:125,0:31])//2
+  dmat[5,1]=np.sum(depth[90:125,32:63])//2
+  dmat[5,2]=np.sum(depth[90:125,64:95])//2
+  dmat[5,3]=np.sum(depth[90:125,96:127])//2
+  dmat[5,4]=np.sum(depth[90:125,128:159])//2
+  dmat[5,5]=np.sum(depth[90:125,160:191])//2
+  dmat[5,6]=np.sum(depth[90:125,192:221])//2
+  dmat[5,7]=np.sum(depth[90:125,224:255])//2
 
   dmat[6,0]=np.sum(depth[126:143,0:31])
   dmat[6,1]=np.sum(depth[126:143,32:63])
@@ -184,9 +184,17 @@ if __name__ == "__main__":
 
     nearcount=(dmat>200000).sum()
 
+    if(nearcount>10):
+      print("something ahead")
+    elif(nearcount>20):
+      print("stop pls")
+    elif(nearcount>30):
+      print("BLOODY FUCKING STOP")
+    else:
+      print("this is fine")
 
 
-    print(dmat)
+    #print(dmat)
     print("regions above threshold: ",nearcount)
     print(" ")
     #detect closeness
