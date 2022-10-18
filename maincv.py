@@ -184,9 +184,9 @@ if __name__ == "__main__":
 
     nearcount=(dmat>200000).sum()
 
-    if(nearcount>10):
+    if(nearcount>=10 and nearcount<20):
       print("something ahead")
-    elif(nearcount>20):
+    elif(nearcount>=20 and nearcount<30):
       print("stop pls")
     elif(nearcount>30):
       print("BLOODY FUCKING STOP")
