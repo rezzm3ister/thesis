@@ -9,8 +9,8 @@ sx=1280
 sy=720
 
 #sign detection size
-dx=426
-dy=240
+dx=640
+dy=360
 
 #depth detect size
 vx=256
