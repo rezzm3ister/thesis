@@ -14,7 +14,8 @@ def getport():
 #ardu=serial.Serial(port=getport(),baudrate=9600,timeout=1)
 
 if __name__ == "__main__":
-  vid=cv.VideoCapture(1, cv.CAP_DSHOW) #trial and error to find the right cam
+  #vid=cv.VideoCapture(0, cv.CAP_DSHOW) #trial and error to find the right cam
+  vid=cv.VideoCapture(0)
   cascade=cv.CascadeClassifier('cascade-2.xml')
   mx=0
   my=0

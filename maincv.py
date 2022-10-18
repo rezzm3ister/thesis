@@ -3,8 +3,8 @@ import time
 import serial
 import serial.tools.list_ports
 
-resx=568
-resy=320
+resx=426
+resy=240
 
 def getport():
   ports=list(serial.tools.list_ports.comports())
@@ -13,8 +13,8 @@ def getport():
 #ardu=serial.Serial(port=getport(),baudrate=9600,timeout=1)
 
 if __name__ == "__main__":
-  vid=cv.VideoCapture(0, cv.CAP_DSHOW) #trial and error to find the right cam
-  cascade=cv.cuda.CascadeClassifier('cascade-2.xml')
+  vid=cv.VideoCapture(0) #trial and error to find the right cam
+  cascade=cv.CascadeClassifier('cascade-2.xml')
   mx=0
   my=0
   vid.set(cv.CAP_PROP_FRAME_WIDTH,1280)
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     if cv.waitKey(1) & 0xFF == ord('q'):
       break
     frame=cv.resize(frame,(resx,resy))
-    signs=cascade.detectMultiScale(frame)
+    signs=cascade.detectMultiScale(frame,scaleFactor=1.1,minNeighbors=5)
     #time.sleep(0.01)
     frame=cv.cvtColor(frame,cv.COLOR_GRAY2BGR)
     for(x,y,w,h) in signs:
@@ -64,6 +64,7 @@ if __name__ == "__main__":
     if(signs==()):
       print('s')
     else:
+      print(mx," ",my)
       if (mx>(2/3*framex)):
       #ardu.write(bytes(['r']))
         print('r')
