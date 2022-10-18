@@ -1,7 +1,14 @@
+#alvarez angeles thesis
+
+#THIS CODE REQUIRES OPENCV-CUDA TO BE INSTALLED
+#IT ALSO REQUIRES 2 WEBCAMS
+
+
 import cv2 as cv
 import time
 import serial
 import serial.tools.list_ports
+
 
 
 #main cam res size
@@ -84,16 +91,22 @@ if __name__ == "__main__":
     depth=stereo.compute(dfl,dfr)
     cv.imshow("depth",depth/1280)
 
+
+
+    #FPS COUNTER
     ft=time.time()
     fps=1/(ft-pft)
     #cv.putText(depth, str(fps), (7, 70), font, 1, 255, 3, cv.LINE_AA)
-    print(fps)
+    #print(fps)
     pft=ft
 
-
+    
     #SEND DATA TO ARDUINO
+    #uncomment after
+    '''
     if(signs==()):
       print('s')
+      #ardu.write(bytes(['s']))
     else:
       print(mx," ",my)
       if (mx>(2/3*dx)):
@@ -111,6 +124,6 @@ if __name__ == "__main__":
     #else:
     #print("has stuff")
     #print(mx,' ',my)
-
+    '''
     
   cv.destroyAllWindows()
