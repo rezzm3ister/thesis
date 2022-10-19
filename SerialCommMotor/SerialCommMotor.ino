@@ -90,10 +90,15 @@ void loop() {
 		  else{command=200}
 	  }
   }
-  else if (Serial.available()) { //replace the data type from string to char/int so it can use a switch case much more cleaner code than elif spamming
+  else {
+    if (Serial.available()) { //replace the data type from string to char/int so it can use a switch case much more cleaner code than elif spamming
     //recvOneChar(); //REMEMBER MOTOR1 IS REVERSED FOR SOME REASON
     command = Serial.read();
-    switch (command) {
+    }
+    else{command=200}
+  }
+
+  switch (command) {
         case 100://Forward
           motorcontrol(154,1,154,0);
           break;
@@ -112,7 +117,7 @@ void loop() {
         default:
           motorcontrol(0,0,0,0);
           break;
-    }}
+      }
     /*if (command == 150){ //LEFT
       motorcontrol(154,1,154,1);
       //delay(1000);
