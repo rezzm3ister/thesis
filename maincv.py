@@ -202,9 +202,9 @@ if __name__ == "__main__":
   
     #debugging prints
     #print(dmat)
-    print("points above threshold: ",nearcount)
+    print("points above threshold: ",nearcount," ",verynearcount)
     print(" ")
-    print(depth)
+    #print(depth)
     #print(ardu)
     
     #FPS COUNTER
@@ -227,7 +227,7 @@ if __name__ == "__main__":
     if(signs==()):
       #ardu.write(bytes(['s']))
       
-      if(verynearcount>1000):
+      if(nearcount>7000):
         ardu.write(bytes([105]))
         print('b')
       else:
@@ -238,10 +238,12 @@ if __name__ == "__main__":
     else:
       print(mx," ",my)
       
-      if(nearcount>4000):
-        if(verynearcount>500):
+      if(nearcount>2000):
+        if(nearcount>7000):
+          print('b')
           ardu.write(bytes([105]))
         else:
+          print('s')
           ardu.write(bytes([205]))
       else:
         if (mx>(2/3*dx)):
