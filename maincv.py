@@ -224,9 +224,15 @@ if __name__ == "__main__":
     
     
     if(signs==()):
-      print('s'.encode(encoding='ascii'))
       #ardu.write(bytes(['s']))
-      ardu.write(bytes([200]))
+      
+      if(verynearcount>500):
+        ardu.write(bytes([101]))
+        print('b')
+      else:
+        ardu.write(bytes([200]))
+        print('s')
+
       
     else:
       print(mx," ",my)
