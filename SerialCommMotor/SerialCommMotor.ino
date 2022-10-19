@@ -36,7 +36,7 @@ void setup() {
   pinMode(A5,INPUT); //f/b 
   pinMode(A4,INPUT); //l/r 
   
-  Serial.begin(9600);        
+  Serial.begin(115200);        
   for(i=8; i <=11;i=i+1) 
   {
     pinMode(i, OUTPUT);  //motor control
@@ -78,31 +78,36 @@ void loop() {
   
   if (manual==1){//manual override
 	  if(Mf>=900){
-		  command=100;
+		  command=210;
 	  }
 	  else if(Mf<=100){
-		  command=101;
+		  command=211;
 	  }
 	  else{
 		  if(Mr>=900){
-			  command=151;
+			  command=212;
 		  }
 		  else if(Mr<=100){
-			  command=150;
+			  command=213;
 		  }
-		  else{command=200;}
+		  else{command=214;}
 	  }
   }
   else {
     if (Serial.available()) { //replace the data type from string to char/int so it can use a switch case much more cleaner code than elif spamming
     //recvOneChar(); //REMEMBER MOTOR1 IS REVERSED FOR SOME REASON
       tc = Serial.read();
-      if(tc>200){command=tc;}
-      //more functions can be added here
-      if(command==201){
-        tc=Serial.read();
-        if(tc<200){speed=Serial.read();}
+      if(tc>200){
+        command=tc;
+        if(command==201){
+          tc=Serial.read();
+          if(tc<200){speed=Serial.read();}
+        }
+      
       }
+      
+      //more functions can be added here
+      
     }
     else{//command=200;
     }
@@ -116,10 +121,10 @@ void loop() {
   //210 series: motion
   switch (command) {
       case 210://Forward
-        motorcontrol(speed,1,speed,0);
+        motorcontrol(speed,0,speed,1);
         break;
       case 211://Backward
-        motorcontrol(speed,1,speed,0);
+        motorcontrol(96,1,96,0);
         break;
         case 212://Right
         motorcontrol(96,0,96,0);
