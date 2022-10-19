@@ -112,7 +112,7 @@ def getdispsum(depth):
 
 
 #ARDUINO CONNECT, UNCOMMENT LINE BELOW FOR ARDUINO
-#ardu=serial.Serial(port=getport(),baudrate=9600,timeout=1)
+ardu=serial.Serial(port=getport(),baudrate=9600,timeout=1)
 
 if __name__ == "__main__":
   #initialize both cameras
