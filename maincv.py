@@ -195,9 +195,10 @@ if __name__ == "__main__":
 
     #count number of pixels above a certain disparity threshold
     #number before stopping TBD
-    nearcount=(depth>350).sum()
+    #default: 350,600
+    nearcount=(depth>3500).sum()
 
-    verynearcount=(depth>600).sum()
+    verynearcount=(depth>6000).sum()
 
   
     #debugging prints
@@ -227,7 +228,7 @@ if __name__ == "__main__":
       #ardu.write(bytes(['s']))
       
       if(verynearcount>500):
-        ardu.write(bytes([101]))
+        ardu.write(bytes([105]))
         print('b')
       else:
         ardu.write(bytes([200]))
@@ -239,9 +240,9 @@ if __name__ == "__main__":
       
       if(nearcount>1000):
         if(verynearcount>500):
-          ardu.write(bytes([101]))
+          ardu.write(bytes([105]))
         else:
-          ardu.write(bytes([200]))
+          ardu.write(bytes([205]))
       else:
         if (mx>(2/3*dx)):
           ardu.write(bytes([151]))
@@ -258,6 +259,7 @@ if __name__ == "__main__":
     #else:
     #print("has stuff")
     #print(mx,' ',my)
+    #time.sleep(0.1)
     
     
   cv.destroyAllWindows()

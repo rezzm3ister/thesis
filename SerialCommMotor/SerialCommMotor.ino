@@ -48,13 +48,18 @@ void loop() {
   
   
   //main routine here
-  disforward = measureDistance(trigPinF, echoPinF);
-      Serial.println(disforward);
-      Serial.read();
-  if(disforward > 50){
+  //disforward = measureDistance(trigPinF, echoPinF);
+    //Serial.println(disforward);
+    ///Serial.flush();
+    //Serial.read();
+    
+    //recvOneChar();
+    
+  if(true){
   //motorcontrol154(int speed1, int mydir1, int speed2, int mydir2 ) 
   if (Serial.available()) { //replace the data type from string to char/int so it can use a switch case much more cleaner code than elif spamming
-    recvOneChar(); //REMEMBER MOTOR1 IS REVERSED FOR SOME REASON
+    //recvOneChar(); //REMEMBER MOTOR1 IS REVERSED FOR SOME REASON
+    command = Serial.read();
     if (command == 150){ //LEFT
       motorcontrol(154,1,154,1);
       //delay(1000);
@@ -84,12 +89,13 @@ void loop() {
       //motorcontrol(0,0,0,0);
     }
     Serial.print("Command: ");
-    showNewData(); 
+    //showNewData(); 
   }
   }
   else{
     motorcontrol(0,0,0,0);
   }
+  delay(10);
 } 
 
 void recvOneChar() {
