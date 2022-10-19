@@ -197,12 +197,14 @@ if __name__ == "__main__":
     #number before stopping TBD
     nearcount=(depth>350).sum()
 
+    verynearcount=(depth>600).sum()
+
   
     #debugging prints
     #print(dmat)
     print("points above threshold: ",nearcount)
     print(" ")
-    print(ardu)
+    #print(ardu)
     
     #FPS COUNTER
     ft=time.time()
@@ -216,27 +218,35 @@ if __name__ == "__main__":
     #SEND DATA TO ARDUINO
     #uncomment after
     
-#    if nearcount>3:
-#      print("stopping")
-#      #ardu.write(bytes(['s'])
-#
-#    if(signs==()):
-#      print('s')
-#      #ardu.write(bytes(['s']))
-#    else:
-#      print(mx," ",my)
-#      if (mx>(2/3*dx)):
-#      #ardu.write(bytes(['r']))
-#        print('r')
-#      elif (mx<(1/3*dx)):
-#        #ardu.write(bytes(['l']))
-#        print('l')
-#      elif (mx>(1/3*dx) and mx<(2/3*dx)):
-#        #ardu.write(bytes(['f']))
-#        print('f')
-#      else:
-#        #ardu.write(bytes(['n']))
-#        print('n')
+    if nearcount>1000:
+      print("stopping")
+      #ardu.write(bytes(['s'])
+
+
+    if(signs==()):
+      print('s')
+      ardu.write(bytes(['s']))
+    else:
+      print(mx," ",my)
+      
+      if(nearcount>1000):
+        if(verynearcount>500):
+          ardu.write(bytes(['b']))
+        else:
+          ardu.write(bytes(['s']))
+      else:
+        if (mx>(2/3*dx)):
+          ardu.write(bytes(['r']))
+          print('r')
+        elif (mx<(1/3*dx)):
+          ardu.write(bytes(['l']))
+          print('l')
+        elif (mx>(1/3*dx) and mx<(2/3*dx)):
+          ardu.write(bytes(['f']))
+          print('f')
+        else:
+          ardu.write(bytes(['s']))
+          print('if this shows up you fucked up')
     #else:
     #print("has stuff")
     #print(mx,' ',my)
