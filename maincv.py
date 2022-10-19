@@ -217,6 +217,10 @@ if __name__ == "__main__":
     
     #SEND DATA TO ARDUINO
     #uncomment after
+    #data guide:
+    #100,101: forward, stop
+    #150,151: L,R
+    #200: back
     
     
     if(signs==()):
