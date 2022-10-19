@@ -11,6 +11,8 @@ int run2 = 10; // 0 to 255, 255 = max, 0 = stop
 int dir1 = 8; 
 int dir2 = 11;
 int command;
+int manual;
+int Mf,Mr;
 int receivedChar;
 boolean newData = false;
 
@@ -30,7 +32,7 @@ void setup() {
   pinMode(echoPinR, INPUT); // Sets the echoPin as an INPUT
   
   pinMode(A0,INPUT); //manual override
-  pinmode(A5,INPUT); //f/b 
+  pinMode(A5,INPUT); //f/b 
   pinMode(A4,INPUT); //l/r 
   
   Serial.begin(9600);        
@@ -87,7 +89,7 @@ void loop() {
 		  else if(Mr<=100){
 			  command=150;
 		  }
-		  else{command=200}
+		  else{command=200;}
 	  }
   }
   else {
@@ -95,7 +97,7 @@ void loop() {
     //recvOneChar(); //REMEMBER MOTOR1 IS REVERSED FOR SOME REASON
     command = Serial.read();
     }
-    else{command=200}
+    else{command=200;}
   }
 
   switch (command) {
