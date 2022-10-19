@@ -159,7 +159,7 @@ if __name__ == "__main__":
     #gframe=tempgpu.upload(DMSframe)
 
     #cascade detector, fiddle with this
-    signs=cascade.detectMultiScale(DMSframe,scaleFactor=1.1,minNeighbors=7)
+    signs=cascade.detectMultiScale(DMSframe,scaleFactor=1.1,minNeighbors=5)
 
     #cuda cascade doesnt work weirdly
     #signs=cudacascade.detectMultiScale(DMSframe)
@@ -181,7 +181,6 @@ if __name__ == "__main__":
     dfr=cv.resize(fr,(vx,vy))
     stereo=cv.cuda.StereoSGM.create(minDisparity=10,numDisparities=24,blockSize=6,speckleRange=4)
     depth=stereo.compute(dfl,dfr)
-    depth=depth
     cv.imshow("depth",depth/1280)
 
     #depth regions NOT NEEDED ANYMORE
@@ -196,15 +195,16 @@ if __name__ == "__main__":
     #count number of pixels above a certain disparity threshold
     #number before stopping TBD
     #default: 350,600
-    nearcount=(depth>400).sum()
+    nearcount=(depth>500).sum()
 
-    verynearcount=(depth>800).sum()
+    verynearcount=(depth>700).sum()
 
   
     #debugging prints
     #print(dmat)
     print("points above threshold: ",nearcount)
     print(" ")
+    print(depth)
     #print(ardu)
     
     #FPS COUNTER
