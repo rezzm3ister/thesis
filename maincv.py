@@ -202,6 +202,7 @@ if __name__ == "__main__":
     #print(dmat)
     print("points above threshold: ",nearcount)
     print(" ")
+    print(ardu)
     
     #FPS COUNTER
     ft=time.time()
