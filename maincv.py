@@ -224,8 +224,10 @@ if __name__ == "__main__":
 
 
     if(signs==()):
-      print('s')
-      ardu.write(bytes(['s']))
+      print('s'.encode(encoding='ascii'))
+      #ardu.write(bytes(['s']))
+      ardu.write('s'.encode(encoding='ascii'))
+      
     else:
       print(mx," ",my)
       
