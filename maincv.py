@@ -218,15 +218,11 @@ if __name__ == "__main__":
     #SEND DATA TO ARDUINO
     #uncomment after
     
-    if nearcount>1000:
-      print("stopping")
-      #ardu.write(bytes(['s'])
-
-
+    
     if(signs==()):
       print('s'.encode(encoding='ascii'))
       #ardu.write(bytes(['s']))
-      ardu.write('s'.encode(encoding='ascii'))
+      ardu.write(bytes([200]))
       
     else:
       print(mx," ",my)
