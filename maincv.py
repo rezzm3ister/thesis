@@ -133,6 +133,7 @@ if __name__ == "__main__":
 
   #setting cascade
   cascade=cv.CascadeClassifier('cascade-2.xml')
+  cudacascade=cv.cuda_CascadeClassifier.create('cascade-2.xml')
   mx=0
   my=0
   #this probably isnt used
@@ -154,8 +155,15 @@ if __name__ == "__main__":
     #sign detection section
     #using LEFT eye
     DMSframe=cv.resize(fl,(dx,dy))
-    #cascade detector
-    signs=cascade.detectMultiScale(DMSframe,scaleFactor=1.1,minNeighbors=5)
+    #gframe=tempgpu.upload(DMSframe)
+
+    #cascade detector, fiddle with this
+    signs=cascade.detectMultiScale(DMSframe,scaleFactor=1.1,minNeighbors=7)
+
+    #cuda cascade doesnt work weirdly
+    #signs=cudacascade.detectMultiScale(DMSframe)
+
+
     #allow color again for boxing    
     DMSframe=cv.cvtColor(DMSframe,cv.COLOR_GRAY2BGR)
     for(x,y,w,h) in signs:
