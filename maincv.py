@@ -233,21 +233,21 @@ if __name__ == "__main__":
       
       if(nearcount>1000):
         if(verynearcount>500):
-          ardu.write(bytes(['b']))
+          ardu.write(bytes([101]))
         else:
-          ardu.write(bytes(['s']))
+          ardu.write(bytes([200]))
       else:
         if (mx>(2/3*dx)):
-          ardu.write(bytes(['r']))
+          ardu.write(bytes([151]))
           print('r')
         elif (mx<(1/3*dx)):
-          ardu.write(bytes(['l']))
+          ardu.write(bytes([150]))
           print('l')
         elif (mx>(1/3*dx) and mx<(2/3*dx)):
-          ardu.write(bytes(['f']))
+          ardu.write(bytes([100]))
           print('f')
         else:
-          ardu.write(bytes(['s']))
+          ardu.write(bytes([101]))
           print('if this shows up you fucked up')
     #else:
     #print("has stuff")

@@ -55,30 +55,30 @@ void loop() {
   //motorcontrol154(int speed1, int mydir1, int speed2, int mydir2 ) 
   if (Serial.available()) { //replace the data type from string to char/int so it can use a switch case much more cleaner code than elif spamming
     recvOneChar(); //REMEMBER MOTOR1 IS REVERSED FOR SOME REASON
-    if (command == 108){ //LEFT
+    if (command == 150){ //LEFT
       motorcontrol(154,1,154,1);
       //delay(1000);
       //motorcontrol(0,0,0,0);
     }
-    else if (command == 98){ //BACKWARD 
+    else if (command == 101){ //BACKWARD 
       motorcontrol(154,1,154,0);
       //delay(750);
       //motorcontrol(0,0,0,0);
       
     }
-    else if (command == 102){ //FORWARD
+    else if (command == 100){ //FORWARD
       motorcontrol(154,0,154,1);
       //delay(1000);
       //motorcontrol(0,0,0,0);
     }
-    else if (command == 114){ //RIGHT
+    else if (command == 151){ //RIGHT
       motorcontrol(154,0,154,0);
       //delay(1000);
       //motorcontrol(0,0,0,0);
       //disright = measureDistance(trigPinR, echoPinR);
       //Serial.print(disright);
     }
-    lse if (command == 115){ //STAHP
+    else if (command == 200){ //STAHP
       motorcontrol(0,0,0,0);
       //delay(1000);
       //motorcontrol(0,0,0,0);
