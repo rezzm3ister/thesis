@@ -18,11 +18,12 @@ sy=720
 dx=640
 dy=360
 
-#depth detect size
+#depth detect size, we dont need any bigger than 144p.
 vx=256
 vy=144
 
 #get arduino port
+#theres only one serial device anyway so it just gets the first one.
 def getport():
   ports=list(serial.tools.list_ports.comports())
   return ports[0].device
