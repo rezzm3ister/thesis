@@ -61,14 +61,14 @@ void loop() {
     //Serial.read();
     
     //recvOneChar();
- //disforward = measureDistance(trigPinF, echoPinF);
+ disforward = measureDistance(trigPinF, echoPinF);
  //disright = measureDistance(trigPinR, echoPinR);
  //disleft = measureDistance(trigPinL, echoPinL);
  manual = digitalRead(A0);
  Mf=analogRead(A5);
  Mr=analogRead(A4);
  //Serial.println("Forward Sensor: ");
- //Serial.print(disforward);
+ //Serial.println(disforward);
  //Serial.println("Right Sensor: ");
  //Serial.print(disright);
  //Serial.println("Left Sensor: ");
@@ -100,18 +100,21 @@ void loop() {
     else{command=200;}
   }
 
+  if(disforward<20){command=101;}
+  else{}
+  
   switch (command) {
         case 100://Forward
-          motorcontrol(154,1,154,0);
+          motorcontrol(96,1,96,0);
           break;
         case 101://Backward
-          motorcontrol(154,1,154,0);
+          motorcontrol(96,1,96,0);
           break;
          case 151://Right
-          motorcontrol(154,0,154,0);
+          motorcontrol(96,0,96,0);
           break;
          case 150://Left
-          motorcontrol(154,1,154,1);
+          motorcontrol(96,1,96,1);
           break;
          case 200://Stop
           motorcontrol(0,0,0,0);

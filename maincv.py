@@ -159,7 +159,7 @@ if __name__ == "__main__":
     #gframe=tempgpu.upload(DMSframe)
 
     #cascade detector, fiddle with this
-    signs=cascade.detectMultiScale(DMSframe,scaleFactor=1.1,minNeighbors=5)
+    signs=cascade.detectMultiScale(DMSframe,scaleFactor=1.1,minNeighbors=7)
 
     #cuda cascade doesnt work weirdly
     #signs=cudacascade.detectMultiScale(DMSframe)
@@ -239,12 +239,12 @@ if __name__ == "__main__":
       print(mx," ",my)
       
       if(nearcount>2000):
-        if(nearcount>7000):
+        if(nearcount>5000):
           print('b')
-          ardu.write(bytes([105]))
+          ardu.write(bytes([101]))
         else:
           print('s')
-          ardu.write(bytes([205]))
+          ardu.write(bytes([200]))
       else:
         if (mx>(2/3*dx)):
           ardu.write(bytes([151]))
