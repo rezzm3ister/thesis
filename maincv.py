@@ -179,7 +179,7 @@ if __name__ == "__main__":
     #DEPTH MAP, this uses gpu
     dfl=cv.resize(fl,(vx,vy))
     dfr=cv.resize(fr,(vx,vy))
-    stereo=cv.cuda.StereoSGM.create(minDisparity=10,numDisparities=32,blockSize=16,speckleRange=4)
+    stereo=cv.cuda.StereoSGM.create(minDisparity=10,numDisparities=24,blockSize=6,speckleRange=4)
     depth=stereo.compute(dfl,dfr)
     depth=depth
     cv.imshow("depth",depth/1280)
@@ -196,9 +196,9 @@ if __name__ == "__main__":
     #count number of pixels above a certain disparity threshold
     #number before stopping TBD
     #default: 350,600
-    nearcount=(depth>3500).sum()
+    nearcount=(depth>400).sum()
 
-    verynearcount=(depth>6000).sum()
+    verynearcount=(depth>800).sum()
 
   
     #debugging prints
@@ -227,7 +227,7 @@ if __name__ == "__main__":
     if(signs==()):
       #ardu.write(bytes(['s']))
       
-      if(verynearcount>500):
+      if(verynearcount>1000):
         ardu.write(bytes([105]))
         print('b')
       else:
@@ -238,7 +238,7 @@ if __name__ == "__main__":
     else:
       print(mx," ",my)
       
-      if(nearcount>1000):
+      if(nearcount>4000):
         if(verynearcount>500):
           ardu.write(bytes([105]))
         else:
