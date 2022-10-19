@@ -61,18 +61,18 @@ void loop() {
     //Serial.read();
     
     //recvOneChar();
- disforward = measureDistance(trigPinF, echoPinF);
- disright = measureDistance(trigPinR, echoPinR);
- disleft = measureDistance(trigPinL, echoPinL);
+ //disforward = measureDistance(trigPinF, echoPinF);
+ //disright = measureDistance(trigPinR, echoPinR);
+ //disleft = measureDistance(trigPinL, echoPinL);
  manual = digitalRead(A0);
  Mf=analogRead(A5);
  Mr=analogRead(A4);
- Serial.println("Forward Sensor: ");
- Serial.print(disforward);
- Serial.println("Right Sensor: ");
- Serial.print(disright);
- Serial.println("Left Sensor: ");
- Serial.print(disleft);
+ //Serial.println("Forward Sensor: ");
+ //Serial.print(disforward);
+ //Serial.println("Right Sensor: ");
+ //Serial.print(disright);
+ //Serial.println("Left Sensor: ");
+ //Serial.print(disleft);
   //motorcontrol154(int speed1, int mydir1, int speed2, int mydir2 ) 
   
   if (manual==1){//manual override
