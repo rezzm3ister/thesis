@@ -28,6 +28,11 @@ void setup() {
   pinMode(echoPinL, INPUT); // Sets the echoPin as an INPUT
   pinMode(trigPinR, OUTPUT); // Sets the trigPin as an       
   pinMode(echoPinR, INPUT); // Sets the echoPin as an INPUT
+  
+  pinMode(A0,INPUT); //manual override
+  pinmode(A5,INPUT); //f/b 
+  pinMode(A4,INPUT); //l/r 
+  
   Serial.begin(9600);        
   for(i=8; i <=11;i=i+1) 
   {
@@ -48,14 +53,67 @@ void loop() {
   
   
   //main routine here
-  disforward = measureDistance(trigPinF, echoPinF);
-      Serial.println(disforward);
-      Serial.read();
-  if(disforward > 50){
+  //disforward = measureDistance(trigPinF, echoPinF);
+    //Serial.println(disforward);
+    ///Serial.flush();
+    //Serial.read();
+    
+    //recvOneChar();
+ disforward = measureDistance(trigPinF, echoPinF);
+ disright = measureDistance(trigPinR, echoPinR);
+ disleft = measureDistance(trigPinL, echoPinL);
+ manual = digitalRead(A0);
+ Mf=analogRead(A5);
+ Mr=analogRead(A4);
+ Serial.println("Forward Sensor: ");
+ Serial.print(disforward);
+ Serial.println("Right Sensor: ");
+ Serial.print(disright);
+ Serial.println("Left Sensor: ");
+ Serial.print(disleft);
   //motorcontrol154(int speed1, int mydir1, int speed2, int mydir2 ) 
-  if (Serial.available()) { //replace the data type from string to char/int so it can use a switch case much more cleaner code than elif spamming
-    recvOneChar(); //REMEMBER MOTOR1 IS REVERSED FOR SOME REASON
-    if (command == 150){ //LEFT
+  
+  if (manual==1){//manual override
+	  if(Mf>=900){
+		  command=100;
+	  }
+	  else if(Mf<=100){
+		  command=101;
+	  }
+	  else{
+		  if(Mr>=900){
+			  command=151;
+		  }
+		  else if(Mr<=100){
+			  command=150;
+		  }
+		  else{command=200}
+	  }
+  }
+  else if (Serial.available()) { //replace the data type from string to char/int so it can use a switch case much more cleaner code than elif spamming
+    //recvOneChar(); //REMEMBER MOTOR1 IS REVERSED FOR SOME REASON
+    command = Serial.read();
+    switch (command) {
+        case 100://Forward
+          motorcontrol(154,1,154,0);
+          break;
+        case 101://Backward
+          motorcontrol(154,1,154,0);
+          break;
+         case 151://Right
+          motorcontrol(154,0,154,0);
+          break;
+         case 150://Left
+          motorcontrol(154,1,154,1);
+          break;
+         case 200://Stop
+          motorcontrol(0,0,0,0);
+          break;
+        default:
+          motorcontrol(0,0,0,0);
+          break;
+    }}
+    /*if (command == 150){ //LEFT
       motorcontrol(154,1,154,1);
       //delay(1000);
       //motorcontrol(0,0,0,0);
@@ -84,27 +142,14 @@ void loop() {
       //motorcontrol(0,0,0,0);
     }
     Serial.print("Command: ");
-    showNewData(); 
-  }
+    //showNewData(); 
   }
   else{
     motorcontrol(0,0,0,0);
-  }
+  }*/
+  delay(10);
 } 
 
-void recvOneChar() {
-    if (Serial.available() > 0) {
-        command = Serial.read();
-        newData = true;
-    }
-}
-
-void showNewData() {
-    if (newData == true) {
-        Serial.println(command);
-        newData = false;
-    }
-}
  
 void motorcontrol(int speed1, int mydir1, int speed2, int mydir2 )  {
   // motor1
