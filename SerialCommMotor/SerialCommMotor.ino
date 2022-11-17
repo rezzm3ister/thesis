@@ -10,7 +10,8 @@ int run1 = 9;  // 0 to 255, 255 = max, 0 = stop
 int run2 = 10; // 0 to 255, 255 = max, 0 = stop
 int dir1 = 8; 
 int dir2 = 11;
-int command;
+int command,tc;
+int speed;
 int manual;
 int Mf,Mr;
 int receivedChar;
@@ -95,15 +96,44 @@ void loop() {
   else {
     if (Serial.available()) { //replace the data type from string to char/int so it can use a switch case much more cleaner code than elif spamming
     //recvOneChar(); //REMEMBER MOTOR1 IS REVERSED FOR SOME REASON
-    command = Serial.read();
+      tc = Serial.read();
+      if(tc>200){command=tc;}
+      //more functions can be added here
+      if(command==201){
+        tc=Serial.read();
+        if(tc<200){speed=Serial.read();}
+      }
     }
-    else{command=200;}
+    else{//command=200;
+    }
   }
 
-  if(disforward<20){command=101;}
+  if(disforward<20){command=211;}
   else{}
   
+  //sub-200: speed
+  //200 series: identifiers
+  //210 series: motion
   switch (command) {
+      case 210://Forward
+        motorcontrol(speed,1,speed,0);
+        break;
+      case 211://Backward
+        motorcontrol(speed,1,speed,0);
+        break;
+        case 212://Right
+        motorcontrol(96,0,96,0);
+        break;
+        case 213://Left
+        motorcontrol(96,1,96,1);
+        break;
+        case 214://Stop
+        motorcontrol(0,0,0,0);
+        break;
+      default:
+        motorcontrol(0,0,0,0);
+        break;
+    /*
         case 100://Forward
           motorcontrol(96,1,96,0);
           break;
@@ -122,6 +152,7 @@ void loop() {
         default:
           motorcontrol(0,0,0,0);
           break;
+      */
       }
     /*if (command == 150){ //LEFT
       motorcontrol(154,1,154,1);

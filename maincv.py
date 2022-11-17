@@ -183,6 +183,16 @@ if __name__ == "__main__":
     depth=stereo.compute(dfl,dfr)
     cv.imshow("depth",depth/1280)
 
+    centerdepth=depth[vx//3:vx//3*2,vy//3:vy//3*2]
+    centerdist=np.mean(centerdepth) #add some kind of multiplier
+    
+    #change second array with actual measurement
+    centerdistmm=np.interp(centerdist,[600,0],[100,2000])
+
+    #send speed
+    speed=np.interp(centerdistmm,[100,2000],[0,200])
+
+
     #depth regions NOT NEEDED ANYMORE
     #dmat=np.zeros((8,8))
     #dmx=vx//8
@@ -218,20 +228,16 @@ if __name__ == "__main__":
     
     #SEND DATA TO ARDUINO
     #uncomment after
-    #data guide:
-    #100,101: forward, stop
-    #150,151: L,R
-    #200: back
     
     
     if(signs==()):
       #ardu.write(bytes(['s']))
       
       if(nearcount>7000):
-        ardu.write(bytes([105]))
+        ardu.write(bytes([211]))
         print('b')
       else:
-        ardu.write(bytes([200]))
+        ardu.write(bytes([214]))
         print('s')
 
       
@@ -241,22 +247,22 @@ if __name__ == "__main__":
       if(nearcount>2000):
         if(nearcount>5000):
           print('b')
-          ardu.write(bytes([101]))
+          ardu.write(bytes([211]))
         else:
           print('s')
-          ardu.write(bytes([200]))
+          ardu.write(bytes([214]))
       else:
         if (mx>(2/3*dx)):
-          ardu.write(bytes([151]))
+          ardu.write(bytes([212]))
           print('r')
         elif (mx<(1/3*dx)):
-          ardu.write(bytes([150]))
+          ardu.write(bytes([213]))
           print('l')
         elif (mx>(1/3*dx) and mx<(2/3*dx)):
-          ardu.write(bytes([100]))
+          ardu.write(bytes([210]))
           print('f')
         else:
-          ardu.write(bytes([101]))
+          ardu.write(bytes([225]))
           print('if this shows up you fucked up')
     #else:
     #print("has stuff")
