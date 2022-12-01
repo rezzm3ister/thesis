@@ -21,7 +21,7 @@ def getport():
   return ports[0].device
 
 cascade=cv.CascadeClassifier('cascade-2.xml')
-ardu=serial.Serial(port=getport(),baudrate=9600,timeout=1)
+ardu=serial.Serial(port=getport(),baudrate=115200,timeout=1)
 
 
 if __name__ == "__main__":
@@ -36,6 +36,7 @@ if __name__ == "__main__":
     ret,frame=cam.read()
 
     frame=cv.cvtColor(frame,cv.COLOR_BGR2GRAY)
+    frame=cv.resize(frame,(dx,dy))
 
     signs=cascade.detectMultiScale(frame,scaleFactor=1.1,minNeighbors=7)
     for(x,y,w,h) in signs:
@@ -46,6 +47,10 @@ if __name__ == "__main__":
       #print(x," ",y)
     cv.imshow('img',frame)
 
+
+    ardu.write(bytes([201]))
+    ardu.write(bytes([200]))
+    time.sleep(0.05)
     if(signs==()):
       ardu.write(bytes([214]))
       print('nothing detected')      

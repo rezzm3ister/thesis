@@ -160,7 +160,7 @@ if __name__ == "__main__":
 
     #cascade detector, fiddle with this
     #default minneighbors =7
-    signs=cascade.detectMultiScale(DMSframe,scaleFactor=1.1,minNeighbors=5)
+    signs=cascade.detectMultiScale(DMSframe,scaleFactor=1.1,minNeighbors=7)
 
     #cuda cascade doesnt work weirdly
     #signs=cudacascade.detectMultiScale(DMSframe)
