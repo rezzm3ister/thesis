@@ -101,7 +101,7 @@ void loop() {
         
         if(tc==201){
           tc=Serial.read();
-          if(tc<200){speed=Serial.read();}
+          if(tc<200){speed=tc;}
         }
         else{
           command=tc;
