@@ -97,9 +97,9 @@ void loop() {
     if (Serial.available()) { //replace the data type from string to char/int so it can use a switch case much more cleaner code than elif spamming
     //recvOneChar(); //REMEMBER MOTOR1 IS REVERSED FOR SOME REASON
       tc = Serial.read();
-      if(tc>200){command=tc;}
+      if(tc>201){command=tc;}
       //more functions can be added here
-      if(command==201){
+      if(tc==201){
         tc=Serial.read();
         if(tc<200){speed=Serial.read();}
       }
