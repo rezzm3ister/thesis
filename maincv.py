@@ -19,8 +19,8 @@ dx=640
 dy=360
 
 #depth detect size, we dont need any bigger than 144p.
-vx=256
-vy=144
+vx=320
+vy=180
 
 #get arduino port
 #theres only one serial device anyway so it just gets the first one.
@@ -112,7 +112,7 @@ def getdispsum(depth):
 
 
 #ARDUINO CONNECT, UNCOMMENT LINE BELOW FOR ARDUINO
-ardu=serial.Serial(port=getport(),baudrate=9600,timeout=1)
+ardu=serial.Serial(port=getport(),baudrate=115200,timeout=1)
 
 if __name__ == "__main__":
   #initialize both cameras
@@ -159,6 +159,7 @@ if __name__ == "__main__":
     #gframe=tempgpu.upload(DMSframe)
 
     #cascade detector, fiddle with this
+    #default minneighbors =7
     signs=cascade.detectMultiScale(DMSframe,scaleFactor=1.1,minNeighbors=7)
 
     #cuda cascade doesnt work weirdly
@@ -179,18 +180,19 @@ if __name__ == "__main__":
     #DEPTH MAP, this uses gpu
     dfl=cv.resize(fl,(vx,vy))
     dfr=cv.resize(fr,(vx,vy))
-    stereo=cv.cuda.StereoSGM.create(minDisparity=10,numDisparities=24,blockSize=6,speckleRange=4)
+    stereo=cv.cuda.StereoSGM.create(minDisparity=10,numDisparities=24,blockSize=4,speckleRange=4)
     depth=stereo.compute(dfl,dfr)
     cv.imshow("depth",depth/1280)
 
-    centerdepth=depth[vx//3:vx//3*2,vy//3:vy//3*2]
+    centerdepth=depth[(vy//3):(vy//3*2),(vx//3):(vx//3*2)]
+    cv.imshow("cdepth",centerdepth/1280)
     centerdist=np.mean(centerdepth) #add some kind of multiplier
     
     #change second array with actual measurement
-    centerdistmm=np.interp(centerdist,[600,0],[100,2000])
+    #centerdistmm=np.interp(centerdist,[300,250],[100,2000])
 
     #send speed
-    speed=np.interp(centerdistmm,[100,2000],[0,200])
+    speed=int(np.interp(centerdist,[200,450],[200,0]))
 
 
     #depth regions NOT NEEDED ANYMORE
@@ -204,8 +206,8 @@ if __name__ == "__main__":
 
     #count number of pixels above a certain disparity threshold
     #number before stopping TBD
-    #default: 350,600
-    nearcount=(depth>500).sum()
+    #default: 350,600 at 144p
+    nearcount=(depth>485).sum()
 
     verynearcount=(depth>700).sum()
 
@@ -222,17 +224,20 @@ if __name__ == "__main__":
     fps=1/(ft-pft)
     #cv.putText(depth, str(fps), (7, 70), font, 1, 255, 3, cv.LINE_AA)
     print("fps: ",fps)
+    print("speed: ",centerdist," ",speed)
     pft=ft
 
 
     
     #SEND DATA TO ARDUINO
     #uncomment after
-    
+    ardu.write(bytes([201]))
+    ardu.write(bytes([speed]))
+    time.sleep(0.05)
     
     if(signs==()):
       #ardu.write(bytes(['s']))
-      
+      #default 144p 7000
       if(nearcount>7000):
         ardu.write(bytes([211]))
         print('b')
@@ -243,9 +248,11 @@ if __name__ == "__main__":
       
     else:
       print(mx," ",my)
+      #default 144p 2000,5000
+      #speed=200
       
-      if(nearcount>2000):
-        if(nearcount>5000):
+      if(nearcount>3000):
+        if(nearcount>9000):
           print('b')
           ardu.write(bytes([211]))
         else:
@@ -263,7 +270,7 @@ if __name__ == "__main__":
           print('f')
         else:
           ardu.write(bytes([225]))
-          print('if this shows up you fucked up')
+          print('if this shows up you made a mistake')
     #else:
     #print("has stuff")
     #print(mx,' ',my)
