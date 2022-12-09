@@ -55,26 +55,15 @@ void setup() {
 void loop() { 
   
   
-  //main routine here
-  //disforward = measureDistance(trigPinF, echoPinF);
-    //Serial.println(disforward);
-    ///Serial.flush();
-    //Serial.read();
+
     
     //recvOneChar();
  disforward = measureDistance(trigPinF, echoPinF);
- //disright = measureDistance(trigPinR, echoPinR);
- //disleft = measureDistance(trigPinL, echoPinL);
+ 
  manual = digitalRead(A0);
  Mf=analogRead(A5);
  Mr=analogRead(A4);
- //Serial.println("Forward Sensor: ");
- //Serial.println(disforward);
- //Serial.println("Right Sensor: ");
- //Serial.print(disright);
- //Serial.println("Left Sensor: ");
- //Serial.print(disleft);
-  //motorcontrol154(int speed1, int mydir1, int speed2, int mydir2 ) 
+ 
   
   if (manual==1){//manual override
 	  if(Mf>=900){
@@ -95,7 +84,6 @@ void loop() {
   }
   else {
     if (Serial.available()) { //replace the data type from string to char/int so it can use a switch case much more cleaner code than elif spamming
-    //recvOneChar(); //REMEMBER MOTOR1 IS REVERSED FOR SOME REASON
       tc = Serial.read();
       if(tc>200){
         
@@ -141,61 +129,9 @@ void loop() {
       default:
         motorcontrol(0,0,0,0);
         break;
-    /*
-        case 100://Forward
-          motorcontrol(96,1,96,0);
-          break;
-        case 101://Backward
-          motorcontrol(96,1,96,0);
-          break;
-         case 151://Right
-          motorcontrol(96,0,96,0);
-          break;
-         case 150://Left
-          motorcontrol(96,1,96,1);
-          break;
-         case 200://Stop
-          motorcontrol(0,0,0,0);
-          break;
-        default:
-          motorcontrol(0,0,0,0);
-          break;
-      */
+    
       }
-    /*if (command == 150){ //LEFT
-      motorcontrol(154,1,154,1);
-      //delay(1000);
-      //motorcontrol(0,0,0,0);
-    }
-    else if (command == 101){ //BACKWARD 
-      motorcontrol(154,1,154,0);
-      //delay(750);
-      //motorcontrol(0,0,0,0);
-      
-    }
-    else if (command == 100){ //FORWARD
-      motorcontrol(154,0,154,1);
-      //delay(1000);
-      //motorcontrol(0,0,0,0);
-    }
-    else if (command == 151){ //RIGHT
-      motorcontrol(154,0,154,0);
-      //delay(1000);
-      //motorcontrol(0,0,0,0);
-      //disright = measureDistance(trigPinR, echoPinR);
-      //Serial.print(disright);
-    }
-    else if (command == 200){ //STAHP
-      motorcontrol(0,0,0,0);
-      //delay(1000);
-      //motorcontrol(0,0,0,0);
-    }
-    Serial.print("Command: ");
-    //showNewData(); 
-  }
-  else{
-    motorcontrol(0,0,0,0);
-  }*/
+    
   delay(10);
 } 
 
